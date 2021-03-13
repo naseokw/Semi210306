@@ -2,47 +2,54 @@ package semi.vo;
 
 import java.io.Serializable;
 
-public class ChatVO implements Serializable{
+public class ChatVO implements Serializable {
 
-//	아이디, 닉네임, 비밀번호
-	private String id;		// 아이디
-	private String nickName;	// 닉네임
-	private String password;	// 비밀번호
-	
+	private String id = "";
+	private String nickname = "";
+	private String password = "";
 
-	public ChatVO() {}
-	public ChatVO(String id,String password){
+	public ChatVO() {
+	}
+
+	public ChatVO(String id, String password) {
 		this.id = id;
-		this.nickName = "";
+		this.nickname = "";
 		this.password = password;
 	}
-	public ChatVO(String id,String nickName,String password){
+
+	public ChatVO(String id, String nickname, String password) {
 		this.id = id;
-		this.nickName = nickName;
+		this.nickname = nickname;
 		this.password = password;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getNickName() {
-		return nickName;
+
+	public String getNickname() {
+		return nickname;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 //	@Override
 //	public String toString() {
 //		return "VO [id=" + id + ", nickName=" + nickName + ", password=" + password + "]";
 //	}
-	
+
 }

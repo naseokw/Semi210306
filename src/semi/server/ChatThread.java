@@ -11,16 +11,13 @@ import java.util.List;
 
 public class ChatThread extends Thread {
 
-//	모든 접속자의 목록을 가지고 있어야 내가 입력한 내용을 다른 모든 클라이언트로 전송할 수 있다.
-//	모든 접속자의 목록은 모든 사용자가 공유해야 하므로 정적 멤버로 만들어야 한다.
+	// PrintWriter 객체 담는 동기화된 리스트 초기화
 	static List<PrintWriter> list = Collections.synchronizedList(new ArrayList<PrintWriter>());
+	//
 	static ArrayList<String> member = new ArrayList<>();
 	Socket socket = null;
 	PrintWriter pw = null;
 	String id = null;
-	String nickName = null;
-	static String memberList = "";
-
 	ChatDAO cDAO = new ChatDAO();
 
 	public ChatThread() {
@@ -28,13 +25,13 @@ public class ChatThread extends Thread {
 
 	public ChatThread(Socket socket, String id) {
 		this.socket = socket;
+		this.id = id;
 		try {
-			pw = new PrintWriter(socket.getOutputStream()); // 출력 스트림을 만든다.
-			list.add(pw); // 출력 스트림을 리스트에 저장한다.
+			pw = new PrintWriter(socket.getOutputStream()); // 소켓으로부터 출력스트림 받음
+			list.add(pw); // 출력스트림을 리스트에 저장
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.id = id;
 	}
 
 	@Override
@@ -79,7 +76,7 @@ public class ChatThread extends Thread {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(id + " " + name + " 접속 종료");
 		} finally {
 //			채팅 창을 닫았으므로 채팅 목록에서 제거한다.
 			list.remove(pw);

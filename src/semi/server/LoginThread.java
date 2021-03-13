@@ -11,7 +11,7 @@ import semi.vo.ChatVO;
 public class LoginThread extends Thread {
 
 	Socket socket = null;
-	Scanner sc = null; //클라이언트로부터 받는 VO가 join인지 login인지 구분
+	Scanner sc = null; // 클라이언트로부터 받는 VO가 join인지 login인지 구분
 	PrintWriter pw = null; // 로그인 승인, 거절 메시지 송신
 	ObjectInputStream ois = null;// 클라이언트로부터 VO 수신
 	ChatDAO cDAO = new ChatDAO();
@@ -32,28 +32,27 @@ public class LoginThread extends Thread {
 
 	@Override
 	public void run() {
-		String str = ""; // 클라이언트로부터 받은 메세지를 구분
+		String str = "";
 		if (socket != null) {
 			str = sc.nextLine().trim();
-//			클라이언트에서 로그인 버튼을누르면 login메세지가 회원가입 버튼을 누르면 join메세지가 전송된다.
+			// 클라이언트에서 로그인 버튼을 누르면 login이 회원가입 버튼을 누르면 join이 전송된다.
 			if (str.length() > 0) {
-				if (str.equals("join")) {
-//					회원가입 진행
+				if (str.equals("join")) { // 클라이언트로부터 받은 메시지가 join일 때
 					try {
+						// 클라이언트에 다시 join 메시지 보냄
 						pw.write("join\n");
 						pw.flush();
 
-						boolean flag = true;
-						while (flag) {
+						boolean isFlag = false;
 
+						while (!isFlag) {
 							Object obj = ois.readObject();
 							ChatVO cVO = (ChatVO) obj;
-//		                  System.out.println(vo.toString());
 //		                  vo객체에서 id,nickName,password를 가져와 중복되는 id가 있는지 검사한다.
 //		                  중복되는 id가 없을 경우 가입을 승인한다.
 							boolean result = cDAO.idCompare(cVO.getId());
 							if (!result) {
-								cDAO.join(cVO.getId(), cVO.getNickName(), cVO.getPassword());
+								cDAO.join(cVO.getId(), cVO.getNickname(), cVO.getPassword());
 								pw.write("join_accept\n");
 								pw.flush();
 							} else {
